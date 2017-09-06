@@ -2,6 +2,7 @@ package com.javarush.task.task33.task3310;
 
 import com.javarush.task.task33.task3310.strategy.*;
 import com.javarush.task.task33.task3310.tests.FunctionalTest;
+import com.javarush.task.task33.task3310.tests.SpeedTest;
 
 import java.util.Date;
 import java.util.HashSet;
@@ -13,7 +14,8 @@ import java.util.Set;
 public class Solution {
     public static void main(String[] args) {
         //StorageStrategy strategy = new DualHashBidiMapStorageStrategy();
-        //Solution.testStrategy(strategy, 10000);
+        //Solution.testStrategy(strategy, 10000);.
+        /*
         FunctionalTest test = new FunctionalTest();
         test.testDualHashBidiMapStorageStrategy();
         test.testFileStorageStrategy();
@@ -21,6 +23,9 @@ public class Solution {
         test.testHashMapStorageStrategy();
         test.testOurHashBiMapStorageStrategy();
         test.testOurHashMapStorageStrategy();
+        */
+        SpeedTest speedTest = new SpeedTest();
+        speedTest.testHashMapStorage();
     }
 
     // для переданного множества строк возвращает множество идентификаторов
