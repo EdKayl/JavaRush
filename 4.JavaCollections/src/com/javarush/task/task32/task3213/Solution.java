@@ -16,20 +16,17 @@ public class Solution {
     }
 
     public static String decode(StringReader reader, int key) throws IOException {
-        if(reader == null) return new String();
-        StringWriter sw = new StringWriter();
-        int symbol;
-        while((symbol = reader.read()) != -1) {
-            char ch;
-            if (Character.isLetterOrDigit(symbol)) {
-                ch =(char)(symbol+key);
-            } else {
-                ch = (char)symbol;
+        int a;
+        StringBuffer res = new StringBuffer();
+
+        try {
+            while ((a = reader.read()) != -1) {
+                res.append(Character.toString((char) (a + key)));
             }
-
-            sw.write(ch);
+        } catch (Exception e) {
+            return new String();
         }
-        return sw.toString();
-    }
 
+        return res.toString();
+    }
 }

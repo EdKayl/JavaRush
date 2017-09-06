@@ -3,7 +3,9 @@ package com.javarush.task.task31.task3112;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.nio.file.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /* 
 Загрузчик файлов
@@ -20,14 +22,16 @@ public class Solution {
 
     public static Path downloadFile(String urlString, Path downloadDirectory) throws IOException {
         // implement this method
-        URL url = new URL(urlString);
-        InputStream stream = url.openStream();
-        Path tmpFile = Files.createTempFile("temp-", ".tmp");
-        Files.copy(stream, tmpFile);
+        URL url=new URL(urlString);
+        InputStream inputStream=url.openStream();
 
-        String nameResult = downloadDirectory + "\\" + urlString.substring(urlString.lastIndexOf("/")+1);
-        Path resultFile = Files.createFile(Paths.get(nameResult));
-        Files.move(tmpFile, resultFile, StandardCopyOption.REPLACE_EXISTING);
-        return resultFile;
+        Path tmp=Files.createTempFile("temp-",".tmp");
+        Files.copy(inputStream,tmp);
+
+        String fieName=urlString.substring(urlString.lastIndexOf("/"));
+        Path destPath=Paths.get(downloadDirectory + "/" + fieName);
+        Files.move(tmp,destPath);
+
+        return destPath;
     }
 }

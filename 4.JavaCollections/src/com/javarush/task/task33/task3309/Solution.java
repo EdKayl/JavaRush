@@ -12,23 +12,27 @@ import java.io.StringWriter;
 */
 public class Solution {
     public static String toXmlWithComment(Object obj, String tagName, String comment) {
+        StringWriter writer = new StringWriter();
+        String res = null;
         try {
-            StringWriter stringWriter = new StringWriter();
             JAXBContext context = JAXBContext.newInstance(obj.getClass());
             Marshaller marshaller = context.createMarshaller();
-            marshaller.marshal(obj, stringWriter);
+            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+            marshaller.marshal(obj, writer);
 
-            StringBuilder builder = new StringBuilder(stringWriter.getBuffer());
-            int index = 0;
-            while ((index = builder.indexOf(tagName, index)) > -1) {
-                builder.indexOf(comment, index - 1);
-            }
-            return builder.toString();
+            String xml = writer.toString();
+
+            if (xml.indexOf(tagName) > -1)
+                res = xml.replace("<" + tagName + ">", "<!--" + comment + "-->\n" + "<" + tagName + ">");
+            else
+                res = xml;
+
         } catch (JAXBException e) {
-
+            e.printStackTrace();
         }
-        return "";
+        return res;
     }
+
 
     public static void main(String[] args) {
         String result = Solution.toXmlWithComment(new AnExample(), "needCDATA", "it's a comment - <needCDATA>");

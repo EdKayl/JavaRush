@@ -8,7 +8,7 @@ import java.util.List;
 /* 
 Построй дерево(1)
 */
-public class CustomTree extends AbstractList<String> implements Cloneable, Serializable{
+public class CustomTree extends AbstractList implements Cloneable, Serializable {
     Entry<String> root;
 
     public static void main(String[] args) {
@@ -19,57 +19,6 @@ public class CustomTree extends AbstractList<String> implements Cloneable, Seria
         //System.out.println("Expected 3, actual is " + ((CustomTree) list).getParent("8"));
         list.remove("5");
         //System.out.println("Expected null, actual is " + ((CustomTree) list).getParent("11"));
-    }
-    /*
-    public add(String elementName) {
-
-    }
-    */
-    @Override
-    public boolean addAll(int index, Collection<? extends String> c) {
-        throw new UnsupportedOperationException();
-        //return super.addAll(index, c);
-    }
-
-    @Override
-    protected void removeRange(int fromIndex, int toIndex) {
-        throw new UnsupportedOperationException();
-        //super.removeRange(fromIndex, toIndex);
-    }
-
-    @Override
-    public String remove(int index) {
-        throw new UnsupportedOperationException();
-        //return super.remove(index);
-    }
-
-    @Override
-    public List<String> subList(int fromIndex, int toIndex) {
-        throw new UnsupportedOperationException();
-        //return super.subList(fromIndex, toIndex);
-    }
-
-    @Override
-    public String set(int index, String element) {
-        throw new UnsupportedOperationException();
-        //return super.set(index, element);
-    }
-
-    @Override
-    public void add(int index, String element) {
-        throw new UnsupportedOperationException();
-        //super.add(index, element);
-    }
-
-    @Override
-    public String get(int index) {
-        throw new UnsupportedOperationException();
-        //return null;
-    }
-
-    @Override
-    public int size() {
-        return 0;
     }
 
     static class Entry<T> implements Serializable {
@@ -85,15 +34,55 @@ public class CustomTree extends AbstractList<String> implements Cloneable, Seria
         }
 
         void checkChildren() {
-            if(leftChild != null) {
+            if (leftChild != null)
                 availableToAddLeftChildren = false;
-            }
-            if(rightChild != null) {
+            if (rightChild != null)
                 availableToAddRightChildren = false;
-            }
         }
+
         boolean isAvailableToAddChildren() {
-            return (availableToAddLeftChildren || availableToAddRightChildren);
+            return availableToAddLeftChildren || availableToAddRightChildren;
         }
+    }
+
+    @Override
+    public int size() {
+        return 0;
+    }
+
+
+    public String get(int index) {
+        throw new UnsupportedOperationException();
+        //return null;
+    }
+
+    public String set(int index, String element) {
+        throw new UnsupportedOperationException();
+    }
+
+    public void add(int index, String element) {
+        throw new UnsupportedOperationException();
+    }
+
+    public String remove(int index) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public boolean addAll(int index, Collection c) {
+        throw new UnsupportedOperationException();
+        //return super.addAll(index, c);
+    }
+
+    @Override
+    public List subList(int fromIndex, int toIndex) {
+        throw new UnsupportedOperationException();
+        //return super.subList(fromIndex, toIndex);
+    }
+
+    @Override
+    protected void removeRange(int fromIndex, int toIndex) {
+        throw new UnsupportedOperationException();
+        //super.removeRange(fromIndex, toIndex);
     }
 }
