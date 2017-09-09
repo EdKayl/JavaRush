@@ -1,0 +1,36 @@
+package com.javarush.task.task36.task3608.model;
+
+import com.javarush.task.task36.task3608.bean.User;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Created by user on 07.09.2017.
+ */
+public class FakeModel implements Model {
+    private ModelData modelData = new ModelData();
+
+    @Override
+    public ModelData getModelData() {
+        return modelData;
+    }
+
+    @Override
+    public void loadUsers() {
+        List<User> userList = new ArrayList<>();
+        userList.add(new User("User1", 1, 1));
+        userList.add(new User("User2", 2, 1));
+        modelData.setUsers(userList);
+    }
+
+    @Override
+    public void loadDeletedUsers() {
+        throw  new UnsupportedOperationException();
+    }
+
+    @Override
+    public void loadUserById(long userId) {
+        throw new UnsupportedOperationException();
+    }
+}
