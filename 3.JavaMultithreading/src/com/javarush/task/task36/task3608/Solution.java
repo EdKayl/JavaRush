@@ -15,14 +15,16 @@ public class Solution {
         Controller controller = new Controller();
 
         usersView.setController(controller);
+        editUserView.setController(controller);
         controller.setModel(model);
         controller.setUsersView(usersView);
+        controller.setEditUserView(editUserView);
 
         usersView.fireEventShowAllUsers();
 
-        controller.setEditUserView(editUserView);
         usersView.fireEventOpenUserEditForm(126);
-
+        editUserView.fireEventUserChanged("newname", 124, 55);
+        editUserView.fireEventUserDeleted(124);
         usersView.fireEventShowDeletedUsers();
     }
 }

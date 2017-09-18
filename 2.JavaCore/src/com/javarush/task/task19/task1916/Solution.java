@@ -14,51 +14,65 @@ import java.util.List;
 public class Solution {
     public static List<LineItem> lines = new ArrayList<LineItem>();
 
-    public static void main(String[] args) throws IOException{
+    public static void main(String[] args) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        String fileName1 = reader.readLine();
-        String fileName2 = reader.readLine();
+        BufferedReader reader1 = new BufferedReader(new FileReader(reader.readLine()));
+        BufferedReader reader2 = new BufferedReader(new FileReader(reader.readLine()));
+//        Сделать ввод с консоли
+        collate(reader1, reader2);
         reader.close();
+        reader1.close();
+        reader2.close();
+    }
 
-        BufferedReader file1 = new BufferedReader(new FileReader(fileName1));
-        BufferedReader file2 = new BufferedReader(new FileReader(fileName2));
-
-       ArrayList<String> file1Lines = new ArrayList<>();
-       ArrayList<String> file2Lines = new ArrayList<>();
-        while(file1.ready()) {
-            file1Lines.add(file1.readLine());
-
-        }
-        while(file2.ready()) {
-            file2Lines.add(file2.readLine());
-        }
-
-        for(int i = 0; i < file1Lines.size(); i++) {
-            if(i > file2Lines.size()) {
-                lines.add(new LineItem(Type.REMOVED, file1Lines.get(i)));
+    private static void collate(BufferedReader reader1, BufferedReader reader2) throws IOException {
+        //Работает по принципу стека, срезая строку, тип которой мы уже определили,
+        //т.е. если строки SAME - удаляются и обоих массивов
+        //Если строка ADDED - удаляется из второго массива, и тогда второй массив окажется либо пустым,
+        //либо следующие строки 100% будут SAME (Условие: Операции ADDED и REMOVED не могут идти подряд, они всегда разделены SAME)
+        //По аналогии, если строка REMOVED - удаляется из первого массива, и тогда первый массив окажется либо пустым,
+        //либо следующие строки 100% будут SAME (Условие: Операции ADDED и REMOVED не могут идти подряд, они всегда разделены SAME)
+        int maxLength;
+        List<String> lines1 = new ArrayList<>();
+        List<String> lines2 = new ArrayList<>();
+        while (reader1.ready()) lines1.add(reader1.readLine());
+        while (reader2.ready()) lines2.add(reader2.readLine());
+        String s1 = "", s2 = "";
+        while((maxLength = (lines1.size() > lines2.size()) ? lines1.size() : lines2.size()) != 0){
+            // Проверки, чтобы не пытаться получить значение из пустого массива
+            if(lines1.size() != 0)
+                s1 = lines1.get(0);
+            if(lines2.size() != 0)
+                s2 = lines2.get(0);
+            //Если в первый массив пуст, то очевидно, что во втором массиве осталась лишь одна строка и она ADDED
+            if(lines1.size() == 0){
+                lines.add(new LineItem(Type.ADDED, s2));
+                lines2.remove(0);
             }
-            if(i < file2Lines.size()) {
-                if(file1Lines.get(i).equals(file2Lines.get(i))) {
-                    lines.add(new LineItem(Type.SAME, file1Lines.get(i)));
-                }else {
-                    if(i == file2Lines.size()) {
-                        lines.add(new LineItem(Type.ADDED, file2Lines.get(i)));
-                        file2Lines.remove(i);
-                    } else {
-                        if (!(file1Lines.get(i).equals(file2Lines.get(i + 1)))) {
-                            lines.add(new LineItem(Type.REMOVED, file1Lines.get(i)));
-                            file2Lines.add(i, "");
-                        } else {
-                            lines.add(new LineItem(Type.ADDED, file2Lines.get(i)));
-                            file2Lines.remove(i);
-                            i--;
-                        }
-                    }
-                }
+            //Аналогично если второй массив пуст, то в первом осталась лишь однда строка и она REMOVED
+            else if(lines2.size() == 0){
+                lines.add(new LineItem(Type.REMOVED, s1));
+                lines1.remove(0);
             }
-        }
-        for(LineItem item : lines) {
-            System.out.println(item.type + " " + item.line);
+            // Если строки одинаковы, то удаляем по одной строке из каждого массива
+            else if(s1.equals(s2)) {
+                lines.add(new LineItem(Type.SAME, s1));
+                lines1.remove(0);
+                lines2.remove(0);
+            }
+            //Если текущие строки не равны, то проверяем:
+            //Если строка из первого массива равна последующей строке из второго
+            //Вылет за границы при проверке lines2.get(1) учтен в первых двух if'ах
+            else if(s1.equals(lines2.get(1))){
+                lines.add(new LineItem(Type.ADDED, s2));
+                lines2.remove(0);
+            }
+            //Если строка из второго массива равна последующей строке из первого
+            //Вылет за границы при проверке lines1.get(1) учтен в первых двух if'ах
+            else if(lines1.get(1).equals(s2)){
+                lines.add(new LineItem(Type.REMOVED, s1));
+                lines1.remove(0);
+            }
         }
     }
 
